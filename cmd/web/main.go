@@ -7,6 +7,14 @@ import (
 
 func main() {
 	mux := http.NewServeMux()
+
+	// Create file server to serve files out of "./ui/static"
+	fileServer := http.FileServer(http.Dir("./ui/static"))
+
+	// Create handler from the file server that serves all requests to /static/,
+	// stripping "/static" before a request reaches the file server
+	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
+
 	mux.HandleFunc("/", home)
 	mux.HandleFunc("/snippet/view", snippetView)
 	mux.HandleFunc("/snippet/create", snippetCreate)
