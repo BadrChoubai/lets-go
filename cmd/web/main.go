@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+// Initialize a new instance of our application struct, containing dependencies.
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
