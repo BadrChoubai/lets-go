@@ -13,6 +13,7 @@ type Snippet struct {
 	Expires time.Time
 }
 
+// SnippetModel Think of this as a service layer or data access layer
 type SnippetModel struct {
 	DB *sql.DB
 }
