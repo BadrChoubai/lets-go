@@ -11,38 +11,37 @@ import (
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		http.NotFound(w, r)
+		app.notFound(w)
 		return
 	}
 
 	snippets, err := app.snippets.Latest()
-
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
 
-	for _, snippet := range snippets {
-		fmt.Fprintf(w, "%+v\n", snippet)
+	files := []string{
+		"./ui/html/base.tmpl.html",
+		"./ui/html/partials/nav.tmpl.html",
+		"./ui/html/pages/home.tmpl.html",
 	}
-	//files := []string{
-	//	"./ui/html/base.tmpl.html",
-	//	"./ui/html/partials/nav.tmpl.html",
-	//	"./ui/html/pages/home.tmpl.html",
-	//}
-	//
-	//ts, err := template.ParseFiles(files...)
-	//
-	//if err != nil {
-	//	app.serverError(w, err)
-	//	return
-	//}
-	//
-	//err = ts.ExecuteTemplate(w, "base", nil)
-	//if err != nil {
-	//	app.errorLog.Print(err.Error())
-	//	app.serverError(w, err)
-	//}
+
+	templates, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	data := TemplateData{
+		Snippets: snippets,
+	}
+
+	err = templates.ExecuteTemplate(w, "base", data)
+	if err != nil {
+		app.serverError(w, err)
+	}
+
 }
 
 func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
