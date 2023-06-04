@@ -29,22 +29,10 @@ func main() {
 		infoLog:  infoLog,
 	}
 
-	mux := http.NewServeMux()
-
-	// Create file server to serve files out of "./ui/static"
-	fileServer := http.FileServer(http.Dir("./ui/static"))
-	// Create handler from the file server that serves all requests to /static/,
-	// stripping "/static" before a request reaches the file server
-	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
-
-	mux.HandleFunc("/", app.home)
-	mux.HandleFunc("/snippet/view", app.snippetView)
-	mux.HandleFunc("/snippet/create", app.snippetCreate)
-
 	srv := &http.Server{
 		Addr:     *addr,
 		ErrorLog: errorLog,
-		Handler:  mux,
+		Handler:  app.routes(),
 	}
 
 	infoLog.Printf("Starting server on http://127.0.0.1%s", *addr)
