@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"errors"
 	"time"
 )
 
@@ -48,7 +49,27 @@ func (model *SnippetModel) Insert(title string, content string, expires int) (in
 }
 
 func (model *SnippetModel) Get(id int) (*Snippet, error) {
-	return nil, nil
+	// Because our snippets table uses the id column as its primary key this query will only ever return exactly one
+	// database row (or none at all).
+	stmt := `SELECT id, title, content, created, expires FROM snippets
+    WHERE expires > UTC_TIMESTAMP() AND id = ?`
+
+	row := model.DB.QueryRow(stmt, id)
+
+	// Initialize a pointer to a new zeroed Snippet struct.
+	s := &Snippet{}
+
+	// row.Scan copy each field value in SQL row to corresponding field in Snippet struct
+	err := row.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrNoRecord
+		} else {
+			return nil, err
+		}
+	}
+
+	return s, nil
 }
 func (model *SnippetModel) Latest() ([]*Snippet, error) {
 	return nil, nil
