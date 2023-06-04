@@ -45,6 +45,7 @@ func main() {
 	if err != nil {
 		errorLog.Fatal(err)
 	}
+
 	app := &application{
 		errorLog:      errorLog,
 		infoLog:       infoLog,
