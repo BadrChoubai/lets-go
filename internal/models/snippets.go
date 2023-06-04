@@ -79,6 +79,9 @@ func (model *SnippetModel) Latest() ([]*Snippet, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// A defer statement defers the execution of a function
+	// until the surrounding function returns.
 	defer rows.Close()
 
 	snippets := []*Snippet{}
