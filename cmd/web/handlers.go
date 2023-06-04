@@ -47,10 +47,19 @@ func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.Header().Set("Allow", http.MethodPost)
 
-		// Use the http.Error method to send message and error as the response body
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
 
-	w.Write([]byte("Create a new snippet"))
+	title := "First ever snippet"
+	content := `print("Hello, World!)`
+	expires := 7
+
+	id, err := app.snippets.Insert(title, content, expires)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	http.Redirect(w, r, fmt.Sprintf("/snippet/view?id=%d", id), http.StatusSeeOther)
 }
