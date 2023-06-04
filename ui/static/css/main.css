@@ -67,10 +67,10 @@ textarea, input:not([type="submit"]) {
 }
 
 header {
-    background-image: -webkit-linear-gradient(left, #2c292d, #2c292d 25%, #ff6188 25%, #ff6188 35%, #ffd866 35%, #ffd866 45%, #a9dc76 45%, #a9dc76 55%, #78dce8 55%, #78dce8 65%, #ab9df2 65%, #ab9df2 75%, #fdf9f3 75%);
-    background-image: -moz-linear-gradient(left, #2c292d, #2c292d 25%, #ff6188 25%, #ff6188 35%, #ffd866 35%, #ffd866 45%, #a9dc76 45%, #a9dc76 55%, #78dce8 55%, #78dce8 65%, #ab9df2 65%, #ab9df2 75%, #fdf9f3 75%);
-    background-image: -ms-linear-gradient(left, #2c292d, #2c292d 25%, #ff6188 25%, #ff6188 35%, #ffd866 35%, #ffd866 45%, #a9dc76 45%, #a9dc76 55%, #78dce8 55%, #78dce8 65%, #ab9df2 65%, #ab9df2 75%, #fdf9f3 75%);
-    background-image: linear-gradient(to right, #2c292d, #2c292d 25%, #ff6188 25%, #ff6188 35%, #ffd866 35%, #ffd866 45%, #a9dc76 45%, #a9dc76 55%, #78dce8 55%, #78dce8 65%, #ab9df2 65%, #ab9df2 75%, #fdf9f3 75%);
+    background-image: -webkit-linear-gradient(left, #2c292d, #2c292d 25%, #ff6188 25%, #ff6188 35%, #ffd866 35%, #ffd866 45%, #a9dc76 45%, #a9dc76 55%, #78dce8 55%, #78dce8 65%, #ab9df2 65%, #ab9df2 75%, #2c292d75 75%);
+    background-image: -moz-linear-gradient(left, #2c292d, #2c292d 25%, #ff6188 25%, #ff6188 35%, #ffd866 35%, #ffd866 45%, #a9dc76 45%, #a9dc76 55%, #78dce8 55%, #78dce8 65%, #ab9df2 65%, #ab9df2 75%, #2c292d 75%);
+    background-image: -ms-linear-gradient(left, #2c292d, #2c292d 25%, #ff6188 25%, #ff6188 35%, #ffd866 35%, #ffd866 45%, #a9dc76 45%, #a9dc76 55%, #78dce8 55%, #78dce8 65%, #ab9df2 65%, #ab9df2 75%, #2c292d 75%);
+    background-image: linear-gradient(to right, #2c292d, #2c292d 25%, #ff6188 25%, #ff6188 35%, #ffd866 35%, #ffd866 45%, #a9dc76 45%, #a9dc76 55%, #78dce8 55%, #78dce8 65%, #ab9df2 65%, #ab9df2 75%, #2c292d 75%);
     background-size: 100% 6px;
     background-repeat: no-repeat;
     border-bottom: 1px solid #E4E5E7;
