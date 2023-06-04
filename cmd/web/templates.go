@@ -6,7 +6,7 @@ import (
 	"snippetbox.badrchoubai.dev/internal/models"
 )
 
-type TemplateData struct {
+type templateData struct {
 	Snippet  *models.Snippet
 	Snippets []*models.Snippet
 }
