@@ -9,6 +9,10 @@ import (
 func (app *application) routes() http.Handler {
 	router := httprouter.New()
 
+	router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		app.notFound(w)
+	})
+
 	// Create file server to serve files out of "./ui/static"
 	fileServer := http.FileServer(http.Dir("./ui/static"))
 	// Create handler from the file server that serves all requests to /static/,
