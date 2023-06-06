@@ -6,9 +6,8 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"net/http"
 	"snippetbox.badrchoubai.dev/internal/models"
+	"snippetbox.badrchoubai.dev/internal/validator"
 	"strconv"
-	"strings"
-	"unicode/utf8"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -61,10 +60,10 @@ func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 }
 
 type snippetCreateForm struct {
-	Title       string
-	Expires     int
-	FieldErrors map[string]string
-	Content     string
+	Title   string
+	Content string
+	Expires int
+	validator.Validator
 }
 
 func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request) {
@@ -81,33 +80,20 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 	}
 
 	form := snippetCreateForm{
-		Title:       r.PostForm.Get("title"),
-		Content:     r.PostForm.Get("content"),
-		Expires:     expires,
-		FieldErrors: map[string]string{},
+		Title:   r.PostForm.Get("title"),
+		Content: r.PostForm.Get("content"),
+		Expires: expires,
 	}
 
-	fieldErrors := make(map[string]string)
+	form.CheckField(validator.NotBlank(form.Title), "title", "field: title, may not be left blank")
+	form.CheckField(validator.MaxChars(form.Title, 30), "title", "field: title, may not be greater than 30 characters in length")
+	form.CheckField(validator.NotBlank(form.Content), "content", "field: content, may not be left blank")
+	form.CheckField(validator.PermittedInt(form.Expires, 1, 7, 365), "expires", "field: expires, must have a value of one day, one week, or one year")
 
-	if strings.TrimSpace(form.Title) == "" {
-		form.FieldErrors["title"] = "field: title, may not be empty"
-	} else if utf8.RuneCountInString(form.Title) > 100 {
-		form.FieldErrors["title"] = "field: title, may not be greater than 100 characters in length"
-	}
-
-	if strings.TrimSpace(form.Content) == "" {
-		form.FieldErrors["content"] = "field: content, may not be empty"
-	}
-
-	if form.Expires != 1 && form.Expires != 7 && form.Expires != 365 {
-		fieldErrors["expires"] = "field: expires, must have a selected value"
-	}
-
-	if len(form.FieldErrors) > 0 {
+	if !form.Valid() {
 		data := app.newTemplateData(r)
 		data.Form = form
 		app.render(w, http.StatusUnprocessableEntity, "create.tmpl.html", data)
-		return
 	}
 
 	id, err := app.snippets.Insert(form.Title, form.Content, form.Expires)
