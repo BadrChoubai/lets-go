@@ -19,28 +19,30 @@ func (app *application) routes() http.Handler {
 	// stripping "/static" before a request reaches the file server
 	router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer))
 
-	router.HandlerFunc(
+	dynamic := alice.New(app.sessionManager.LoadAndSave)
+
+	router.Handler(
 		http.MethodGet,
 		"/",
-		app.home,
+		dynamic.ThenFunc(app.home),
 	)
 
-	router.HandlerFunc(
+	router.Handler(
 		http.MethodGet,
 		"/snippets/view/:id",
-		app.snippetView,
+		dynamic.ThenFunc(app.snippetView),
 	)
 
-	router.HandlerFunc(
+	router.Handler(
 		http.MethodGet,
 		"/snippets/create",
-		app.snippetCreate,
+		dynamic.ThenFunc(app.snippetCreate),
 	)
 
-	router.HandlerFunc(
+	router.Handler(
 		http.MethodPost,
 		"/snippets/create",
-		app.snippetCreatePost,
+		dynamic.ThenFunc(app.snippetCreatePost),
 	)
 
 	router.HandlerFunc(
