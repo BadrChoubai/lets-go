@@ -95,3 +95,16 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 
 	http.Redirect(w, r, fmt.Sprintf("/snippets/view/%d", id), http.StatusSeeOther)
 }
+
+func (app *application) snippetDelete(w http.ResponseWriter, r *http.Request) {
+	params := httprouter.ParamsFromContext(r.Context())
+
+	id, err := strconv.Atoi(params.ByName("id"))
+	if err != nil || id < 1 {
+		app.notFound(w)
+		return
+	}
+
+	app.snippets.Delete(id)
+	app.infoLog.Println("Snippet Deleted")
+}

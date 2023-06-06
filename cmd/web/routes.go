@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/justinas/alice"
-	"net/http"
+	http "net/http"
 )
 
 func (app *application) routes() http.Handler {
@@ -19,10 +19,35 @@ func (app *application) routes() http.Handler {
 	// stripping "/static" before a request reaches the file server
 	router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer))
 
-	router.HandlerFunc(http.MethodGet, "/", app.home)
-	router.HandlerFunc(http.MethodGet, "/snippets/view/:id", app.snippetView)
-	router.HandlerFunc(http.MethodGet, "/snippets/create", app.snippetCreate)
-	router.HandlerFunc(http.MethodPost, "/snippets/create", app.snippetCreatePost)
+	router.HandlerFunc(
+		http.MethodGet,
+		"/",
+		app.home,
+	)
+
+	router.HandlerFunc(
+		http.MethodGet,
+		"/snippets/view/:id",
+		app.snippetView,
+	)
+
+	router.HandlerFunc(
+		http.MethodGet,
+		"/snippets/create",
+		app.snippetCreate,
+	)
+
+	router.HandlerFunc(
+		http.MethodPost,
+		"/snippets/create",
+		app.snippetCreatePost,
+	)
+
+	router.HandlerFunc(
+		http.MethodDelete,
+		"/snippets/:id",
+		app.snippetDelete,
+	)
 
 	standard := alice.New(app.recoverAtPanic, app.logRequest, secureHeaders)
 

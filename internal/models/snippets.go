@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"time"
 )
 
@@ -46,6 +47,23 @@ func (model *SnippetModel) Insert(title string, content string, expires int) (in
 	// The ID returned has the type int64, so we convert it to an int type
 	// before returning.
 	return int(id), nil
+}
+
+func (model *SnippetModel) Delete(id int) (int, error) {
+	stmt := `DELETE FROM snippets WHERE ID=?`
+
+	result, err := model.DB.Exec(stmt, id)
+	fmt.Println(err)
+	if err != nil {
+		return 0, err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+
+	return int(rowsAffected), nil
 }
 
 func (model *SnippetModel) Get(id int) (*Snippet, error) {
