@@ -51,6 +51,36 @@ func (app *application) routes() http.Handler {
 		app.snippetDelete,
 	)
 
+	router.HandlerFunc(
+		http.MethodGet,
+		"/user/signup",
+		app.userSignup
+	)
+
+	router.HandlerFunc(
+		http.MethodPost,
+		 "/user/signup",
+		app.userSignupPost
+	)
+
+	router.HandlerFunc(
+		http.MethodGet,
+		"/user/login",
+		app.userLogin
+	)
+
+	router.HandlerFunc(
+		http.MethodPost,
+		"/user/login",
+		app.userLoginPost
+	)
+
+	router.HandlerFunc(
+		http.MethodPost,
+		"/user/signup",
+		app.userLogoustPost
+	)
+
 	standard := alice.New(app.recoverAtPanic, app.logRequest, secureHeaders)
 
 	return standard.Then(router)
