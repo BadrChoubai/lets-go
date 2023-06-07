@@ -77,7 +77,7 @@ func (app *application) routes() http.Handler {
 
 	router.Handler(
 		http.MethodPost,
-		"/user/signup",
+		"/user/logout",
 		dynamic.ThenFunc(app.userLogoutPost),
 	)
 
