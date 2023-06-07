@@ -54,31 +54,31 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(
 		http.MethodGet,
 		"/user/signup",
-		app.userSignup
-	)
-
-	router.HandlerFunc(
-		http.MethodPost,
-		 "/user/signup",
-		app.userSignupPost
-	)
-
-	router.HandlerFunc(
-		http.MethodGet,
-		"/user/login",
-		app.userLogin
-	)
-
-	router.HandlerFunc(
-		http.MethodPost,
-		"/user/login",
-		app.userLoginPost
+		app.userSignup,
 	)
 
 	router.HandlerFunc(
 		http.MethodPost,
 		"/user/signup",
-		app.userLogoustPost
+		app.userSignupPost,
+	)
+
+	router.HandlerFunc(
+		http.MethodGet,
+		"/user/login",
+		app.userLogin,
+	)
+
+	router.HandlerFunc(
+		http.MethodPost,
+		"/user/login",
+		app.userLoginPost,
+	)
+
+	router.HandlerFunc(
+		http.MethodPost,
+		"/user/signup",
+		app.userLogoutPost,
 	)
 
 	standard := alice.New(app.recoverAtPanic, app.logRequest, secureHeaders)
