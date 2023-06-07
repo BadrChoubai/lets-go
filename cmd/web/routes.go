@@ -51,34 +51,34 @@ func (app *application) routes() http.Handler {
 		app.snippetDelete,
 	)
 
-	router.HandlerFunc(
+	router.Handler(
 		http.MethodGet,
 		"/user/signup",
-		app.userSignup,
+		dynamic.ThenFunc(app.userSignup),
 	)
 
-	router.HandlerFunc(
+	router.Handler(
 		http.MethodPost,
 		"/user/signup",
-		app.userSignupPost,
+		dynamic.ThenFunc(app.userSignupPost),
 	)
 
-	router.HandlerFunc(
+	router.Handler(
 		http.MethodGet,
 		"/user/login",
-		app.userLogin,
+		dynamic.ThenFunc(app.userLogin),
 	)
 
-	router.HandlerFunc(
+	router.Handler(
 		http.MethodPost,
 		"/user/login",
-		app.userLoginPost,
+		dynamic.ThenFunc(app.userLoginPost),
 	)
 
-	router.HandlerFunc(
+	router.Handler(
 		http.MethodPost,
 		"/user/signup",
-		app.userLogoutPost,
+		dynamic.ThenFunc(app.userLogoutPost),
 	)
 
 	standard := alice.New(app.recoverAtPanic, app.logRequest, secureHeaders)
