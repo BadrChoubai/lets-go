@@ -19,7 +19,7 @@ func (v *Validator) Valid() bool {
 	return len(v.FieldErrors) == 0
 }
 
-func (v *Validator) AddField(key, message string) {
+func (v *Validator) AddFieldError(key, message string) {
 	if v.FieldErrors == nil {
 		v.FieldErrors = make(map[string]string)
 	}
@@ -31,7 +31,7 @@ func (v *Validator) AddField(key, message string) {
 
 func (v *Validator) CheckField(ok bool, key, message string) {
 	if !ok {
-		v.AddField(key, message)
+		v.AddFieldError(key, message)
 	}
 }
 
