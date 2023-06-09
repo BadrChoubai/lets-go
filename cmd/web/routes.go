@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/justinas/alice"
-	http "net/http"
+	"net/http"
 )
 
 func (app *application) routes() http.Handler {
@@ -19,7 +19,8 @@ func (app *application) routes() http.Handler {
 	// stripping "/static" before a request reaches the file server
 	router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer))
 
-	dynamic := alice.New(app.sessionManager.LoadAndSave)
+	// Use the nosurf middleware on all our 'dynamic' routes
+	dynamic := alice.New(app.sessionManager.LoadAndSave, noSurf)
 
 	router.Handler(
 		http.MethodGet,
@@ -63,6 +64,8 @@ func (app *application) routes() http.Handler {
 		dynamic.ThenFunc(app.userLoginPost),
 	)
 
+	// Because the 'protected' middlewhere chain appends to the 'dynamic'
+	// the noSurf middleware will also be used on the three routes below
 	protected := dynamic.Append(app.requireAuthentication)
 
 	router.Handler(
