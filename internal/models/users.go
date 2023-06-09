@@ -80,7 +80,3 @@ func (model *UserModel) Authenticate(email, password string) (int, error) {
 
 	return id, nil
 }
-
-func (model *UserModel) Exists(id int) (bool, error) {
-	return false, nil
-}
