@@ -22,6 +22,15 @@ type UserModel struct {
 	DB *sql.DB
 }
 
+func (model *UserModel) Exists(id int) (bool, error) {
+	var exists bool
+
+	stmt := "SELECT EXISTS(SELECT true FROM users WHERE id = ?)"
+
+	err := model.DB.QueryRow(stmt, id).Scan(&exists)
+	return exists, err
+}
+
 func (model *UserModel) Insert(name, email, password string) error {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 12)
 	if err != nil {
