@@ -33,18 +33,6 @@ func (app *application) routes() http.Handler {
 		dynamic.ThenFunc(app.snippetView),
 	)
 
-	router.Handler(
-		http.MethodGet,
-		"/snippets/create",
-		dynamic.ThenFunc(app.snippetCreate),
-	)
-
-	router.Handler(
-		http.MethodPost,
-		"/snippets/create",
-		dynamic.ThenFunc(app.snippetCreatePost),
-	)
-
 	router.HandlerFunc(
 		http.MethodDelete,
 		"/snippets/:id",
@@ -75,10 +63,24 @@ func (app *application) routes() http.Handler {
 		dynamic.ThenFunc(app.userLoginPost),
 	)
 
+	protected := dynamic.Append(app.requireAuthentication)
+
+	router.Handler(
+		http.MethodGet,
+		"/snippets/create",
+		protected.ThenFunc(app.snippetCreate),
+	)
+
+	router.Handler(
+		http.MethodPost,
+		"/snippets/create",
+		protected.ThenFunc(app.snippetCreatePost),
+	)
+
 	router.Handler(
 		http.MethodPost,
 		"/user/logout",
-		dynamic.ThenFunc(app.userLogoutPost),
+		protected.ThenFunc(app.userLogoutPost),
 	)
 
 	standard := alice.New(app.recoverAtPanic, app.logRequest, secureHeaders)
