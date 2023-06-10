@@ -6,7 +6,12 @@ import (
 	"testing"
 )
 
-func TestUserModel_Exists(t *testing.T) {
+func Test_UserModel_Exists(t *testing.T) {
+	// Skip the test if the "-short" flag is provided when running the test.
+	if testing.Short() {
+		t.Skip("models: skipping integration test")
+	}
+
 	tests := []struct {
 		name   string
 		userID int
