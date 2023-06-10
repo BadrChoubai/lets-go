@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestPing(t *testing.T) {
+func Test_Ping(t *testing.T) {
 	t.Parallel()
 	app := newTestApplication(t)
 
@@ -21,7 +21,7 @@ func TestPing(t *testing.T) {
 	assert.Equal(t, body, "OK")
 }
 
-func TestSnippetView(t *testing.T) {
+func Test_SnippetView(t *testing.T) {
 	app := newTestApplication(t)
 
 	ts := newTestServer(t, app.routes())
@@ -79,7 +79,7 @@ func TestSnippetView(t *testing.T) {
 	}
 }
 
-func TestUserSignup(t *testing.T) {
+func Test_UserSignup(t *testing.T) {
 	app := newTestApplication(t)
 	ts := newTestServer(t, app.routes())
 	defer ts.Close()
