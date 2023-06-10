@@ -3,7 +3,6 @@ package models
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"time"
 )
 
@@ -20,7 +19,13 @@ type SnippetModel struct {
 	DB *sql.DB
 }
 
-func (model *SnippetModel) Insert(title string, content string, expires int) (int, error) {
+type SnippetModelInterface interface {
+	Insert(title, content string, expires int) (int, error)
+	Get(id int) (*Snippet, error)
+	Latest() ([]*Snippet, error)
+}
+
+func (model *SnippetModel) Insert(title, content string, expires int) (int, error) {
 	// Write the SQL statement we want to execute. I've split it over two lines
 	// for readability (which is why it's surrounded with backquotes instead
 	// of normal double quotes).
@@ -47,23 +52,6 @@ func (model *SnippetModel) Insert(title string, content string, expires int) (in
 	// The ID returned has the type int64, so we convert it to an int type
 	// before returning.
 	return int(id), nil
-}
-
-func (model *SnippetModel) Delete(id int) (int, error) {
-	stmt := `DELETE FROM snippets WHERE ID=?`
-
-	result, err := model.DB.Exec(stmt, id)
-	fmt.Println(err)
-	if err != nil {
-		return 0, err
-	}
-
-	rowsAffected, err := result.RowsAffected()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(rowsAffected), nil
 }
 
 func (model *SnippetModel) Get(id int) (*Snippet, error) {

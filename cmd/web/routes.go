@@ -38,12 +38,6 @@ func (app *application) routes() http.Handler {
 		dynamic.ThenFunc(app.snippetView),
 	)
 
-	router.HandlerFunc(
-		http.MethodDelete,
-		"/snippets/:id",
-		app.snippetDelete,
-	)
-
 	router.Handler(
 		http.MethodGet,
 		"/user/signup",
