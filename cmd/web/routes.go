@@ -14,6 +14,9 @@ func (app *application) routes() http.Handler {
 		app.notFound(w)
 	})
 
+	// Add a new GET /ping route.
+	router.HandlerFunc(http.MethodGet, "/ping", ping)
+
 	// Create file server to serve files out of "./ui/static"
 	fileServer := http.FileServer(http.FS(ui.Files))
 	// Create handler from the file server that serves all requests to /static/,
